@@ -1,7 +1,8 @@
-# CurrencyConverter
+# Currency Converter
 
 This is an application purely developed with Kotlin. Other features are still yet in progress.
 Various libraries used are:
+
 # Realm Database - For persisting/storing data locally.
 # Retrofit - For handling HTTP requests.
 # Material Design - For UI designs and layouts
