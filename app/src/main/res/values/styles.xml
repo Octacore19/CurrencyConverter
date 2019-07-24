@@ -1,0 +1,52 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_white_variant</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/color_green_main</item>
+
+        <item name="actionMenuTextColor">@color/color_green_main</item>
+        <item name="actionMenuTextAppearance">@style/MenuItemText</item>
+        <item name="colorError">@color/color_red_error</item>
+
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="MenuItemText" parent="TextAppearance.MaterialComponents.Body1" />
+
+    <style name="SpinnerStyle" parent="android:style/Widget.TextView.SpinnerItem">
+        <item name="android:textAppearance">@style/TextBodyLabel</item>
+    </style>
+
+    <style name="TextTitle" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textColor">@color/color_blue_variant</item>
+        <item name="fontFamily">@font/ubuntu_medium</item>
+    </style>
+
+    <style name="TextBodyLabel" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="ConvertButton" parent="Widget.AppCompat.Button">
+        <item name="android:textAppearance">@style/ConvertButtonTextAppearance</item>
+        <item name="android:backgroundTint">@color/color_green_main</item>
+    </style>
+
+    <style name="ConvertButtonTextAppearance" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/ubuntu_medium</item>
+        <item name="android:textColor">@color/color_white_variant</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+</resources>

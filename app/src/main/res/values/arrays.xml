@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="foreign_entries">
+        <item>NGN</item>
+        <item>USD</item>
+        <item>GBP</item>
+        <item>GHS</item>
+        <item>EUR</item>
+        <item>BTC</item>
+        <item>JPY</item>
+    </string-array>
+    <string-array name="local_entries">
+        <item>EUR</item>
+    </string-array>
+</resources>

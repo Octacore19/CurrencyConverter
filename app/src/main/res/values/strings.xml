@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Currency Converter</string>
+    <string name="sign_up_text">Sign up</string>
+    <string name="currency_calculator_label">Currency Calculator</string>
+    <string name="label_text">EUR</string>
+    <string name="exchange_logo">Exchange Arrow</string>
+    <string name="btn_text_convert">Convert</string>
+    <string name="exchange_rate_info_text">Mid-market exchange rate at 13:38 UTC</string>
+    <string name="tab_text_30days">Past 30 Days</string>
+    <string name="tab_text_90days">Past 90 days</string>
+    <string name="rate_alert_info_text">Get rate alerts straight to your email box</string>
+</resources>
