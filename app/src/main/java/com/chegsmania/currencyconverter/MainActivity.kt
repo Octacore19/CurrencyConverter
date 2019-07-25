@@ -20,12 +20,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    private val logTag: String? = javaClass.simpleName
+    private val logTag: String = javaClass.simpleName
     private var foreignTextEditText: TextInputEditText? = null
     private var localTextEditText: TextInputEditText? = null
     private var model: MainActivityViewModel? = null
-    private var foreignCurrentKey: String = "NGN"
+    private var foreignCurrentKey: String? = null
     private var localCurrencyKey: String? = null
+    private var localLabel: TextView? = null
+    private var foreignLabel: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +36,17 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = " "
 
-        saveHistoryIntoRealm()
-        Log.i(logTag, "Saved Rates into the database")
-
         model = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+
         localTextEditText = findViewById(R.id.local_currency_edittext)
         foreignTextEditText = findViewById(R.id.foreign_currency_edittext)
+        localLabel = findViewById(R.id.local_currency_label)
+        foreignLabel = findViewById(R.id.foreign_currency_label)
 
+        saveHistoryIntoRealm()
+        Log.i(logTag, "Saved Rates into the database")
         initSpinners()
         convertToForeign()
-        setSummaryExchangeRate()
     }
 
     private fun initSpinners() {
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         localAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
         localCurrencySpinner.adapter = localAdapter
         spinnerController(localCurrencySpinner)
+        localLabel?.text = model!!.base
     }
 
     private fun convertToForeign() {
@@ -108,8 +112,7 @@ class MainActivity : AppCompatActivity() {
                         val convert = model!!.convertToForeign()
                         foreignTextEditText!!.setText(convert.toString())
 
-                        val foreignLabel: TextView = findViewById(R.id.foreign_currency_label)
-                        foreignLabel.text = foreignCurrentKey
+                        foreignLabel?.text = foreignCurrentKey
                         setSummaryExchangeRate()
                     }
                 }
@@ -117,22 +120,24 @@ class MainActivity : AppCompatActivity() {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-        } else {
+        }
+        if(id == R.id.local_currency_spinner){
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(item: AdapterView<*>?, view: View?, position: Int, p3: Long) {
                     try {
                         val currencyKey = item?.getItemAtPosition(position)
                         model?.base = currencyKey.toString()
+                        localCurrencyKey = currencyKey.toString()
+
                         model?.setAllRates()
                         model?.foreign = model?.getAllRates()!![foreignCurrentKey]!!.toDouble()
 
                         val convert = model!!.convertToForeign()
                         foreignTextEditText!!.setText(convert.toString())
 
-                        val localLabel: TextView = findViewById(R.id.local_currency_label)
-                        localLabel.text = model!!.base
+                        localLabel?.text = model!!.base
+                        setSummaryExchangeRate()
 
-                        localCurrencyKey = currencyKey.toString()
                     } catch (err: Exception) {
 
                     }
@@ -160,28 +165,6 @@ class MainActivity : AppCompatActivity() {
         exchangeInfo.text = builder
     }
 
-    private fun saveHistoryIntoRealm() {
-        val converterManager = ConverterManager()
-        val callResponse: Call<FixerLatest> = converterManager.latest("EUR")
-        callResponse.enqueue(object : Callback<FixerLatest> {
-            override fun onFailure(call: Call<FixerLatest>, t: Throwable) {
-                Log.d(logTag, "Error saving into database", t)
-            }
-
-            override fun onResponse(call: Call<FixerLatest>, response: Response<FixerLatest>) {
-                val items = response.body()
-                if (items != null) {
-                    converterManager.addToHistory(items)
-                }
-            }
-        })
-    }
-
-    override fun onResume() {
-        saveHistoryIntoRealm()
-        super.onResume()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
@@ -189,5 +172,29 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveHistoryIntoRealm() {
+        val converterManager = ConverterManager()
+        val callResponse: Call<FixerLatest> = converterManager.latest("EUR")
+        val progress: ProgressBar = findViewById(R.id.progressBar)
+        progress.visibility = ProgressBar.VISIBLE
+        progress.max = 100
+        progress.progress = 50
+        callResponse.enqueue(object : Callback<FixerLatest> {
+            override fun onFailure(call: Call<FixerLatest>, t: Throwable) {
+                progress.visibility = ProgressBar.GONE
+                Log.d(logTag, "Error saving into database", t)
+            }
+
+            override fun onResponse(call: Call<FixerLatest>, response: Response<FixerLatest>) {
+                val items = response.body()
+                progress.progress = 75
+                if (items != null) {
+                    converterManager.addToHistory(items)
+                }
+                progress.visibility = ProgressBar.GONE
+            }
+        })
     }
 }

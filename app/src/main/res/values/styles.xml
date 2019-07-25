@@ -24,10 +24,6 @@
 
     <style name="MenuItemText" parent="TextAppearance.MaterialComponents.Body1" />
 
-    <style name="SpinnerStyle" parent="android:style/Widget.TextView.SpinnerItem">
-        <item name="android:textAppearance">@style/TextBodyLabel</item>
-    </style>
-
     <style name="TextTitle" parent="TextAppearance.MaterialComponents.Headline2">
         <item name="android:textColor">@color/color_blue_variant</item>
         <item name="fontFamily">@font/ubuntu_medium</item>
